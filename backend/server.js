@@ -1,12 +1,12 @@
 const express = require("express")
-const { Web3 } = require("web3")
+const Web3 = require("web3").default
 const cors = require("cors")
 const app = express()
 const port = 3000
 const SimpleRealEstate = require("../build/contracts/SimpleRealEstate.json")
 
 const web3 = new Web3("http://127.0.0.1:8545") // Connect to local Ethereum node
-const contractAddress = "0x92af7d707Ba73f38158ac8439c05c91d9Be8DA97"
+const contractAddress = "0xCc6caC27AB790e7B72AEC1C5179e0b7F0e105849"
 const contractABI = SimpleRealEstate.abi
 
 const contract = new web3.eth.Contract(contractABI, contractAddress)
@@ -22,6 +22,8 @@ app.get("/property", async (req, res) => {
       owner: details[0],
       propertyAddress: details[1],
       propertyValue: details[2].toString(), // Convert BigInt to string
+      longitude: details[3],
+      latitude: details[4],
     })
   } catch (error) {
     console.error(error)
