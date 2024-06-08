@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Simple Real Estate Transaction</title>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+  </head>
+  <body>
+    <h2>Simple Real Estate Transaction</h2>
+    <div>
+      <label>Property Address: </label>
+      <span id="propertyAddress"></span>
+    </div>
+    <div>
+      <label>Property Value: </label>
+      <span id="propertyValue"></span>
+    </div>
+    <div>
+      <label>Longitude: </label>
+      <span id="longitude"></span>
+    </div>
+    <div>
+      <label>Latitude: </label>
+      <span id="latitude"></span>
+    </div>
+    <div>
+      <label>Current Owner: </label>
+      <span id="owner"></span>
+    </div>
+    <hr />
+    <h3>Transfer Property</h3>
+    <div>
+      <label>New Owner Address: </label>
+      <input type="text" id="newOwnerAddress" />
+    </div>
+    <button onclick="transferProperty()">Transfer Property</button>
+
+    <script>
+      async function loadPropertyDetails() {
+        try {
+          const response = await fetch("http://localhost:3000/property")
+          const data = await response.json()
+          document.getElementById("propertyAddress").innerText =
+            data.propertyAddress
+          document.getElementById("propertyValue").innerText =
+            data.propertyValue
+          document.getElementById("longitude").innerText = data.longitude
+          document.getElementById("latitude").innerText = data.latitude
+          document.getElementById("owner").innerText = data.owner
+          console.log("Property Details:", data) // Log the property details to the console
+        } catch (error) {
+          console.error("Error loading property details:", error)
+        }
+      }
+
+      async function transferProperty() {
+        const newOwnerAddress = document.getElementById("newOwnerAddress").value
+        try {
+          const response = await fetch("http://localhost:3000/transfer", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ newOwner: newOwnerAddress }),
+          })
+
+          if (!response.ok) {
+            throw new Error("Failed to transfer property")
+          }
+
+          const result = await response.json()
+          console.log("Transfer Result:", result) // Log the transfer result to the console
+          loadPropertyDetails() // Reload property details to reflect the changes
+        } catch (error) {
+          console.error("Error transferring property:", error)
+        }
+      }
+
+      window.onload = loadPropertyDetails
+    </script>
+  </body>
+</html>
