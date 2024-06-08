@@ -6,7 +6,7 @@ const port = 3000
 const SimpleRealEstate = require("../build/contracts/SimpleRealEstate.json")
 
 const web3 = new Web3("http://127.0.0.1:8545") // Connect to local Ethereum node
-const contractAddress = "0xCc6caC27AB790e7B72AEC1C5179e0b7F0e105849"
+const contractAddress = "0x88545c63187D3650aeb0eBAB17F9B337C8Ea5CF1"
 const contractABI = SimpleRealEstate.abi
 
 const contract = new web3.eth.Contract(contractABI, contractAddress)
